@@ -9,7 +9,7 @@
         tools:context=".MainActivity">
         <fragment
             android:id="@+id/postsFragment"
-            android:name="com.example.postapp.PostsFragment"
+            android:name="com.example.postapp.posts.PostsFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
