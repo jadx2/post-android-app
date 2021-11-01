@@ -1,7 +1,7 @@
-package com.example.postapp.network
+package com.example.postapp.network.postsapi
 
 data class PostsProperty(
-    val userId: Int,
+    val userId: Long,
     val id: Int,
     val title: String,
     val body: String
