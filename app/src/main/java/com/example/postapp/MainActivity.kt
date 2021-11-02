@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import com.example.postapp.databinding.ActivityMainBinding
+import com.example.postapp.posts.PostsFragment
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding

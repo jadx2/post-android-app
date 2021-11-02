@@ -1,37 +1,36 @@
 package com.example.postapp.posts
 
-import androidx.lifecycle.LiveData
+import android.app.Application
+import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import com.example.postapp.database.poststable.Post
+import com.example.postapp.database.poststable.PostsDao
 import com.example.postapp.network.postsapi.PostsApi
 import kotlinx.coroutines.*
 
-class PostsViewModel : ViewModel() {
-
-    private val _response = MutableLiveData<String>()
-    val response:  LiveData<String>
-        get() = _response
+class PostsViewModel(
+    private val database: PostsDao,
+    application: Application
+) : AndroidViewModel(application) {
 
     private var viewModelJob = Job()
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
+    val posts = MutableLiveData<List<Post>>()
 
     init {
-        getPosts()
     }
 
-    private fun getPosts() {
+    fun onFetch() {
         coroutineScope.launch {
-            _response.value = result()
-        }
-    }
-
-    private suspend fun result(): String {
-        val listResult = PostsApi.retrofitService.getPosts()
-        return withContext(Dispatchers.IO) {
-            try {
-                "Success: ${listResult.size} Posts retrieved"
-            } catch (t: Throwable) {
-                "Failure: " + t.message
+            withContext(Dispatchers.IO) {
+                val listResult = PostsApi.retrofitService.getPosts()
+                listResult.forEach {
+                    val post = Post(it.id, it.userId, it.title, it.body)
+                    database.insert(post)
+                }
+                val fetchPosts = database.getAllPosts()
+                posts.postValue(fetchPosts)
             }
         }
     }
@@ -40,5 +39,4 @@ class PostsViewModel : ViewModel() {
         super.onCleared()
         viewModelJob.cancel()
     }
-
 }
