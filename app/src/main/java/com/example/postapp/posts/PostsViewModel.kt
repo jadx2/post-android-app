@@ -18,7 +18,6 @@ class PostsViewModel(
 ) : AndroidViewModel(application) {
 
     private var viewModelJob = Job()
-    private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
     private val _status = MutableLiveData<FetchStatus>()
     val status: LiveData<FetchStatus>
         get() = _status
