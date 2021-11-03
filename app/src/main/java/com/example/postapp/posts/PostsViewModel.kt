@@ -1,12 +1,13 @@
 package com.example.postapp.posts
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.postapp.database.poststable.Post
 import com.example.postapp.database.poststable.PostsDao
-import com.example.postapp.network.postsapi.PostsApi
+import com.example.postapp.network.PostProperty
+import com.example.postapp.network.PostsApi
 import kotlinx.coroutines.*
 
 class PostsViewModel(
@@ -16,10 +17,13 @@ class PostsViewModel(
 
     private var viewModelJob = Job()
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
-    val posts = MutableLiveData<List<Post>>()
+    private val _posts = MutableLiveData<List<Post>>()
+    val posts: LiveData<List<Post>>
+        get() = _posts
 
-    init {
-    }
+    private val _navigateToPostComments = MutableLiveData<Int?>()
+    val navigateToPostComments: LiveData<Int?>
+        get() = _navigateToPostComments
 
     fun onFetch() {
         coroutineScope.launch {
@@ -30,9 +34,17 @@ class PostsViewModel(
                     database.insert(post)
                 }
                 val fetchPosts = database.getAllPosts()
-                posts.postValue(fetchPosts)
+                _posts.postValue(fetchPosts)
             }
         }
+    }
+
+    fun displayComments(post: Post) {
+        _navigateToPostComments.value = post.id
+    }
+
+    fun displayCommentsComplete() {
+        _navigateToPostComments.value = null
     }
 
     override fun onCleared() {
