@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.postapp.FetchStatus
 import com.example.postapp.database.commentstable.Comment
 import com.example.postapp.database.commentstable.CommentsDao
 import com.example.postapp.database.poststable.Post
@@ -14,6 +15,7 @@ import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.lang.Exception
 
 class CommentsViewModel(
     private val database: CommentsDao,
@@ -22,20 +24,30 @@ class CommentsViewModel(
 
     private var viewModelJob = Job()
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
+    private val _status = MutableLiveData<FetchStatus>()
+    val status: LiveData<FetchStatus>
+        get() = _status
     private val _comments = MutableLiveData<List<Comment>>()
     val comments: LiveData<List<Comment>>
         get() = _comments
 
     fun onFetch(postId: Int) {
         coroutineScope.launch {
+            _status.postValue(FetchStatus.LOADING)
             withContext(Dispatchers.IO) {
-                val listResult = PostsApi.retrofitService.getComments(postId)
-                listResult.forEach {
-                    val comment = Comment(it.id, it.postId, it.name, it.email, it.body)
-                    database.insert(comment)
+                try {
+                    val listResult = PostsApi.retrofitService.getComments(postId)
+                    listResult.forEach {
+                        val comment = Comment(it.id, it.postId, it.name, it.email, it.body)
+                        database.insert(comment)
+                    }
+                    val fetchComments = database.getCommentsByPostId(postId)
+                    _comments.postValue(fetchComments)
+                    _status.postValue(FetchStatus.DONE)
+                } catch (e: Exception) {
+                    _status.postValue(FetchStatus.ERROR)
+                    _comments.postValue(ArrayList())
                 }
-                val fetchComments = database.getCommentsByPostId(postId)
-                _comments.postValue(fetchComments)
             }
         }
     }

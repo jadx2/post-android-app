@@ -4,11 +4,13 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import com.example.postapp.FetchStatus
 import com.example.postapp.database.poststable.Post
 import com.example.postapp.database.poststable.PostsDao
-import com.example.postapp.network.PostProperty
 import com.example.postapp.network.PostsApi
 import kotlinx.coroutines.*
+import java.lang.Exception
 
 class PostsViewModel(
     private val database: PostsDao,
@@ -17,6 +19,9 @@ class PostsViewModel(
 
     private var viewModelJob = Job()
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
+    private val _status = MutableLiveData<FetchStatus>()
+    val status: LiveData<FetchStatus>
+        get() = _status
     private val _posts = MutableLiveData<List<Post>>()
     val posts: LiveData<List<Post>>
         get() = _posts
@@ -26,15 +31,22 @@ class PostsViewModel(
         get() = _navigateToPostComments
 
     fun onFetch() {
-        coroutineScope.launch {
+        viewModelScope.launch {
+            _status.postValue(FetchStatus.LOADING)
             withContext(Dispatchers.IO) {
-                val listResult = PostsApi.retrofitService.getPosts()
-                listResult.forEach {
-                    val post = Post(it.id, it.userId, it.title, it.body)
-                    database.insert(post)
+                try {
+                    val listResult = PostsApi.retrofitService.getPosts()
+                    listResult.forEach {
+                        val post = Post(it.id, it.userId, it.title, it.body)
+                        database.insert(post)
+                    }
+                    val fetchPosts = database.getAllPosts()
+                    _posts.postValue(fetchPosts)
+                    _status.postValue(FetchStatus.DONE)
+                } catch (e: Exception) {
+                    _status.postValue(FetchStatus.ERROR)
+                    _posts.postValue(ArrayList())
                 }
-                val fetchPosts = database.getAllPosts()
-                _posts.postValue(fetchPosts)
             }
         }
     }
