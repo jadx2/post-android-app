@@ -9,6 +9,9 @@ import com.example.postapp.database.commentstable.CommentsDao
 import com.example.postapp.database.poststable.Post
 import com.example.postapp.database.poststable.PostsDao
 
+/***
+ * Creates the instance of the table if there is no instance created.
+ */
 @Database(entities = [Post::class, Comment::class], version = 4, exportSchema = false)
 abstract class PostsDatabase: RoomDatabase() {
     abstract val postsDao: PostsDao

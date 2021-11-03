@@ -18,6 +18,9 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.lang.Exception
 
+/***
+ * ViewModel for comments
+ */
 class CommentsViewModel(
     private val database: CommentsDao,
     application: Application
@@ -31,6 +34,9 @@ class CommentsViewModel(
     val comments: LiveData<List<Comment>>
         get() = _comments
 
+    /***
+     * Fetches from the API, inserts the comments in the database and returns them. Handles the status of the query.
+     */
     fun onFetch(postId: Int) {
         viewModelScope.launch {
             _status.postValue(FetchStatus.LOADING)
@@ -50,5 +56,10 @@ class CommentsViewModel(
                 }
             }
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        viewModelJob.cancel()
     }
 }

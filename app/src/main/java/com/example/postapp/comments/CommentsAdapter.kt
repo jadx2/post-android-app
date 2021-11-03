@@ -9,6 +9,9 @@ import com.example.postapp.database.commentstable.Comment
 import com.example.postapp.databinding.CommentsListItemBinding
 import com.example.postapp.comments.CommentsAdapter.ViewHolder
 
+/***
+ * Adapter for the comment's recyclerView
+ */
 class CommentsAdapter() :
     ListAdapter<Comment, ViewHolder>(CommentDiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

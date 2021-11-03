@@ -8,6 +8,12 @@ import com.example.postapp.FetchStatus
 import com.example.postapp.R
 import com.example.postapp.database.commentstable.Comment
 
+/***
+ * Binders for the views:
+ * - Sets the comment's title
+ * - Sets the comment's body
+ * - Manages the visibility of the loading and error images
+ */
 @BindingAdapter("commentBody")
 fun TextView.setCommentBody(item: Comment?) {
     item?.let {

@@ -12,6 +12,9 @@ import com.example.postapp.network.PostsApi
 import kotlinx.coroutines.*
 import java.lang.Exception
 
+/***
+ * ViewModel for the posts
+ */
 class PostsViewModel(
     private val database: PostsDao,
     application: Application
@@ -29,6 +32,9 @@ class PostsViewModel(
     val navigateToPostComments: LiveData<Int?>
         get() = _navigateToPostComments
 
+    /***
+     * Fetches the posts from the API, inserts them in the database and returns them. Handles the status of the query.
+     */
     fun onFetch() {
         viewModelScope.launch {
             _status.postValue(FetchStatus.LOADING)

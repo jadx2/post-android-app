@@ -46,6 +46,10 @@ class CommentsFragment : Fragment() {
         return binding.root
     }
 
+    /***
+     * The postId that is passed from the post's click handler is used in the onFetch to retrieve
+     * all the comment's for that post
+     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val args: CommentsFragmentArgs by navArgs()

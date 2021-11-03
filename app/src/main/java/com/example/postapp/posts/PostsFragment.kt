@@ -49,6 +49,9 @@ class PostsFragment : Fragment() {
         return binding.root
     }
 
+    /***
+     * When the view is created, calls the onFetch to gather all the posts from the API
+     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.onFetch()

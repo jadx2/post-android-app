@@ -8,6 +8,12 @@ import com.example.postapp.FetchStatus
 import com.example.postapp.R
 import com.example.postapp.database.poststable.Post
 
+/***
+ * Binders for the views:
+ * - Sets the post's title
+ * - Sets the post's body
+ * - Manages the visibility of the loading and error images
+ */
 @BindingAdapter("postTitle")
 fun TextView.setPostTitle(item: Post?) {
     item?.let {

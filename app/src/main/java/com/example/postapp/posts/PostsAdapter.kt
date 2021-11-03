@@ -9,6 +9,10 @@ import com.example.postapp.database.poststable.Post
 import com.example.postapp.databinding.PostsListItemBinding
 import com.example.postapp.posts.PostsAdapter.ViewHolder
 
+/***
+ * Adapter for recyclerView of posts. It has a click Handler to navigate to the post's comments
+ * by passing a postId argument to the comments fragment
+ */
 class PostsAdapter(private val onClickListener: OnClickListener) :
     ListAdapter<Post, ViewHolder>(PostsDiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
