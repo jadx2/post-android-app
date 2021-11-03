@@ -19,7 +19,7 @@
             android:id="@+id/test_view"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@{commentsViewModel.selectedPost}"
+            android:text="@{commentsViewModel.comments[0].body}"
             android:textAlignment="center"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

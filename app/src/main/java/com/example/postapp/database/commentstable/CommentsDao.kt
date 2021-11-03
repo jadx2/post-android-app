@@ -12,5 +12,5 @@ interface CommentsDao {
     fun insert(comment: Comment)
 
     @Query("SELECT * from comments_table WHERE postId = :post_id")
-    fun getAllComments(post_id: Int): List<Comment>
+    fun getCommentsByPostId(post_id: Int): List<Comment>
 }
