@@ -6,8 +6,8 @@
     <data>
 
         <variable
-            name="post"
-            type="com.example.postapp.database.poststable.Post" />
+            name="comment"
+            type="com.example.postapp.database.commentstable.Comment" />
 
     </data>
 
@@ -16,7 +16,7 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/post_title"
+            android:id="@+id/comment_body"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -24,14 +24,13 @@
             android:layout_marginEnd="16dp"
             android:textAlignment="viewStart"
             android:textSize="20sp"
-            android:textStyle="bold|italic"
+            app:commentBody="@{comment}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:postTitle="@{post}" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/post_body"
+            android:id="@+id/comment_author"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -39,9 +38,10 @@
             android:layout_marginEnd="16dp"
             android:textAlignment="viewStart"
             android:textSize="16sp"
+            android:textStyle="bold|italic"
+            app:commentAuthor="@{comment}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/post_title"
-            app:postBody="@{post}" />
+            app:layout_constraintTop_toBottomOf="@+id/comment_body" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
