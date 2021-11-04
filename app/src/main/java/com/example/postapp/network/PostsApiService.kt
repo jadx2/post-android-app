@@ -26,8 +26,8 @@ interface PostsApiService {
             List<PostProperty>
 
     @GET("comments")
-    suspend fun getComments(@Query("postId") postId: Int):
-            List<CommentProperty>
+    fun getComments(@Query("postId") postId: Int?):
+            Call<List<CommentProperty>>
 }
 
 object PostsApi {

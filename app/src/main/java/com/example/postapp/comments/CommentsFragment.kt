@@ -29,19 +29,19 @@ class CommentsFragment : Fragment() {
         binding = DataBindingUtil
             .inflate(inflater, R.layout.fragment_comments, container, false)
         val application = requireNotNull(this.activity).application
-        val dataSource = PostsDatabase.getInstance(application).commentsDao
-        val viewModelFactory = CommentsViewModelFactory(dataSource, application)
+//        val dataSource = PostsDatabase.getInstance(application).commentsDao
+        val viewModelFactory = CommentsViewModelFactory(application)
         viewModel = ViewModelProvider(this, viewModelFactory)[CommentsViewModel::class.java]
         binding.lifecycleOwner = this
         binding.commentsViewModel = viewModel
         val adapter = CommentsAdapter()
         binding.commentsList.adapter = adapter
-        viewModel.comments
-            .observe(viewLifecycleOwner, Observer {
-                it?.let {
-                    adapter.submitList(it)
-                }
-            })
+//        viewModel.comments
+//            .observe(viewLifecycleOwner, Observer {
+//                it?.let {
+//                    adapter.submitList(it)
+//                }
+//            })
 
         return binding.root
     }
@@ -53,6 +53,6 @@ class CommentsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val args: CommentsFragmentArgs by navArgs()
-        viewModel.onFetch(args.postSelected)
+        viewModel.fetchComments(args.postSelected)
     }
 }
