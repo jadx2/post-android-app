@@ -8,7 +8,6 @@ import com.example.postapp.posts.PostsViewModel
 import java.lang.IllegalArgumentException
 
 class CommentsViewModelFactory(
-//    private val dataSource: CommentsDao,
     private val application: Application
 ) : ViewModelProvider.Factory {
     @Suppress("uncheck_cast")
